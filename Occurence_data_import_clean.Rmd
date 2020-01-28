@@ -1,0 +1,49 @@
+---
+title: "Occurence Data Import"
+output: html_notebook
+---
+
+Import data from WCANN and WCTRI
+
+```{r setup}
+library(readr)
+library(data.table)
+```
+[Data from Ocean Adapt Github](https://github.com/pinskylab/OceanAdapt/tree/master/data_raw)
+```{r bring in relevant CSVs}
+#Accessed from Ocean Adapt Git Hub, Raw Data January 2020
+wcann_catch <- read_csv("data/wcann_catch.csv")
+wcann_haul <- read_csv("data/wcann_haul.csv")
+wctri_haul <- read_csv("data/wctri_haul.csv")
+wctri_spp <- read_csv("data/wctri_spp.csv")
+
+
+#this one is too big to copy paste
+urlfile1 <- "https://raw.githubusercontent.com/pinskylab/OceanAdapt/master/data_raw/wctri_catch.csv"
+
+wctri_catch <- read_csv(url(urlfile1))
+
+
+
+
+```
+
+How many species? How many observations
+
+```{r species}
+spp_wcann <- unique(wcann_catch$scientific_name)
+spp_wctri <- unique(wctri_spp$SPECIES_NAME)
+
+spp_full <- unique(c(spp_wcann, spp_wctri))
+
+#identified to species
+
+spp_full <- data.table("spp" = spp_full)
+
+#name includes a space (and therefore limits to spp IDs)
+
+spp_full <- spp_full[grep(" ", spp),][!grep("sp", spp),][!grep(" unid", spp),][!grep(" new ", spp),][!grep("\\(", spp),][!grep(" egg", spp),][!grep(" X ", spp),]
+
+write_csv(spp_full, path = "spp_full.csv")
+```
+
