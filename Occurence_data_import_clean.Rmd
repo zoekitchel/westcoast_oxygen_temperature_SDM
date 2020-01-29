@@ -47,3 +47,19 @@ spp_full <- spp_full[grep(" ", spp),][!grep("sp", spp),][!grep(" unid", spp),][!
 write_csv(spp_full, path = "spp_full.csv")
 ```
 
+Maximum depth
+```{r max depth}
+summary(wcann_catch$depth_m)
+
+summary(wcann_haul$depth_hi_prec_m)
+
+summary(wctri_haul$BOTTOM_DEPTH)
+
+summary(wctri_haul$GEAR_DEPTH)
+
+seq(from = 1977, to = 2004, by = 3)
+
+?seq
+```
+
+seq
